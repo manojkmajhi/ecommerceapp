@@ -1,21 +1,20 @@
-import 'package:ecommerceapp/home/screen/home_screen.dart';
-import 'package:ecommerceapp/signin/screen/signin.dart';
-import 'package:ecommerceapp/signin/widget/signin_widget.dart';
+import 'package:ecommerceapp/features/home/screen/home_screen.dart';
+import 'package:ecommerceapp/features/register/screen/register_screen.dart';
+import 'package:ecommerceapp/features/signin/widget/signin_widget.dart';
 import 'package:flutter/material.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class SignIn extends StatefulWidget {
+  const SignIn({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<SignIn> createState() => _SignInState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _SignInState extends State<SignIn> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmpasswordController =
-      TextEditingController();
   final formKey = GlobalKey<FormState>();
+  bool _isRememberMeChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,33 +28,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 30),
+              const SizedBox(height: 40),
+              Center(
+                child: Column(
+                  children: [
+                    Container(
+                      height: 100,
+                      width: 100,
+                      padding: const EdgeInsets.all(8),
+                      child: Image.asset(
+                        'assets/logo/ToolKit_logo.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const Text(
+                      "Login to ToolKit Nepal",
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 45, 189, 50),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
               const Center(
                 child: Text(
-                  "Login to ToolKit Nepal",
+                  "Welcome back! Login with data entered during registration",
                   style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 45, 189, 50),
-                    fontStyle: FontStyle.italic,
+                    fontSize: 16,
                   ),
                 ),
               ),
-              const SizedBox(height: 30),
-              const Center(
-                child: Text(
-                  "Welcome to ToolKit Nepal! Sign up here",
-                  style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-                ),
-              ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SocialLoginButton(
                       iconPath: 'assets/logo/googleicon.png',
-                      text: 'Signup with Google',
+                      text: 'Login with Google',
                       backgroundColor: Colors.white,
                       textColor: Colors.black,
                       onPressed: () {
@@ -66,7 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 16),
                     SocialLoginButton(
                       iconPath: 'assets/logo/facebookicon.png',
-                      text: 'Signup with Facebook',
+                      text: 'Login with Facebook',
                       backgroundColor: Colors.white,
                       textColor: Colors.black,
                       onPressed: () {
@@ -77,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: emailController,
                 decoration: const InputDecoration(
@@ -88,7 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter an email';
+                    return 'Please enter your email';
                   } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                       .hasMatch(value)) {
                     return 'Please enter a valid email address';
@@ -107,45 +120,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 obscureText: true,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter a password';
-                  } else if (value.length < 8) {
-                    return 'Password must be at least 8 characters long';
-                  } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                    return 'Password must contain at least one uppercase letter';
-                  } else if (!RegExp(r'[a-z]').hasMatch(value)) {
-                    return 'Password must contain at least one lowercase letter';
-                  } else if (!RegExp(r'[0-9]').hasMatch(value)) {
-                    return 'Password must contain at least one number';
-                  } else if (!RegExp(r'[!@#\$&*~]').hasMatch(value)) {
-                    return 'Password must contain at least one special character';
+                    return 'Please enter your password';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: confirmpasswordController,
-                decoration: const InputDecoration(
-                  labelText: 'Confirm Your Password',
-                  prefixIcon: Icon(Icons.lock),
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please confirm your password';
-                  } else if (value != passwordController.text) {
-                    return 'Passwords do not match';
-                  }
-                  return null;
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Checkbox(
+                    value: _isRememberMeChecked,
+                    onChanged: (value) {
+                      setState(() {
+                        _isRememberMeChecked = value!;
+                      });
+                    },
+                  ),
+                  const Text('Remember Me'),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: const Size(50, 30),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      alignment: Alignment.centerLeft,
+                    ),
+                    child: const Text(
+                      'Forgot Password?',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const SignIn()),
+                      MaterialPageRoute(builder: (context) => const HomePage()),
                     );
                   }
                 },
@@ -157,7 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 child: const Text(
-                  'Register',
+                  'Log In',
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.white,
@@ -169,12 +185,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Already have an account?"),
+                  const Text("Don't have an account?"),
                   const SizedBox(width: 5),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => const SignIn()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const RegisterScreen()));
                     },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -183,7 +199,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       alignment: Alignment.centerLeft,
                     ),
                     child: const Text(
-                      'Login Here!',
+                      'Register',
                       style: TextStyle(
                         decoration: TextDecoration.underline,
                       ),
