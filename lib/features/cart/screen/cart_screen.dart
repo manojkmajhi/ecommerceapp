@@ -11,28 +11,9 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  // final List<Map<String, dynamic>> cartItems = [
-  //   {
-  //     'title': 'Hammar',
-  //     'subtitle': 'Daily use',
-  //     'price': 180.00,
-  //     'image': 'assets/images/hammar.png',
-  //     'quantity': 1,
-  //   },
-  //   {
-  //     'title': 'Pipe Wrench',
-  //     'subtitle': 'Plumbing',
-  //     'price': 480.00,
-  //     'image': 'assets/images/pipe_wrench.jpg',
-  //     'quantity': 1,
-  //   },
-  // ];
-
-  // double get totalPrice => cartItems.fold(
-  //     0, (sum, item) => sum + (item['price'] as double) * item['quantity']);
-
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<ResponsiveProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 3, 194, 35),
@@ -52,9 +33,7 @@ class _CartScreenState extends State<CartScreen> {
                 color: Colors.white,
                 size: 30,
               ),
-              onPressed: () {
-                provider.increment();
-              },
+              onPressed: () {},
             );
           }),
           Stack(
@@ -81,7 +60,7 @@ class _CartScreenState extends State<CartScreen> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    '${provider.counter}',
+                    '${provider.cartCounter}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,
@@ -100,9 +79,7 @@ class _CartScreenState extends State<CartScreen> {
                 color: Colors.white,
                 size: 30,
               ),
-              onPressed: () {
-                provider.decrement();
-              },
+              onPressed: () {},
             );
           }),
           const SizedBox(
@@ -110,12 +87,19 @@ class _CartScreenState extends State<CartScreen> {
           ),
         ],
       ),
-      body: const SafeArea(
-          child: Center(
-        child: Column(children: [
-          Text("Cart Screen"),
-        ]),
-      )),
+      body: provider.cartCounter == 0
+          ? const Center(
+              child: Text('Cart is empty'),
+            )
+          : ListView.separated(
+              itemBuilder: (context, index) {
+                return const Text('data');
+              },
+              itemCount: provider.cartCounter,
+              separatorBuilder: (BuildContext context, int index) {
+                return const Divider();
+              },
+            ),
 
       // body: SafeArea(
       //   child: Column(

@@ -8,13 +8,13 @@ class ProductDisplayItem extends StatelessWidget {
       required this.productTitle,
       required this.productCategory,
       required this.productPrice,
-      required this.navigateTo});
+    });
   final String? backgroundimage;
   final String productTitle;
 
   final String productCategory;
   final String productPrice;
-  final Widget navigateTo;
+ 
 
   @override
   Widget build(BuildContext context) {

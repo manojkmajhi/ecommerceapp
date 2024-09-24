@@ -4,9 +4,7 @@ import 'package:ecommerceapp/features/dailyuse/screen/daily_use_screen.dart';
 import 'package:ecommerceapp/features/home/model/product_display_model.dart';
 import 'package:ecommerceapp/features/home/widget/button_display.dart';
 import 'package:ecommerceapp/features/home/widget/product_card_widget.dart';
-import 'package:ecommerceapp/features/product_details.dart/screen/product_details_screen.dart';
 
-// import 'package:ecommerceapp/features/product_details.dart/screen/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +16,7 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
+  
 class _HomePageState extends State<HomePage> {
   List<ProductDisplayItem> productList = [
     const ProductDisplayItem(
@@ -26,42 +24,36 @@ class _HomePageState extends State<HomePage> {
       productTitle: "Hammer",
       productCategory: "Daily Use",
       productPrice: "NRs.180.00",
-      navigateTo: ProductDetailsScreen(),
     ),
     const ProductDisplayItem(
       backgroundimage: "assets/images/screwdriver.png",
       productTitle: "Screwdriver",
       productCategory: "Electrical",
       productPrice: "NRs.50.00",
-      navigateTo: ProductDetailsScreen(),
     ),
     const ProductDisplayItem(
       backgroundimage: "assets/images/kodalo.jpg",
       productTitle: "Kodalo",
       productCategory: "Agriculture",
       productPrice: "NRs.270.00",
-      navigateTo: ProductDetailsScreen(),
     ),
     const ProductDisplayItem(
       backgroundimage: "assets/images/pipe_wrench.jpg",
       productTitle: "Pipe Wrench",
       productCategory: "Electrical",
       productPrice: "NRs.480.00",
-      navigateTo: CartScreen(),
     ),
     const ProductDisplayItem(
       backgroundimage: "assets/images/InchTape.png",
       productTitle: "Inch Tape",
       productCategory: "Construction",
       productPrice: "NRs.80.00",
-      navigateTo: DailyUse(),
     ),
     const ProductDisplayItem(
       backgroundimage: "assets/images/glove.png",
       productTitle: "Hand Gloves",
       productCategory: "Daily Use",
       productPrice: "NRs.280.00",
-      navigateTo: DailyUse(),
     ),
   ];
   @override
@@ -113,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    '${provider.counter}',
+                    '${provider.cartCounter}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,
@@ -148,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  '${provider.counter}',
+                  '${provider.wishlistCounter}',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 14,
@@ -221,52 +213,39 @@ class _HomePageState extends State<HomePage> {
               Container(
                 padding: const EdgeInsets.all(8.0),
                 margin: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: (productList.length / 2).ceil(),
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const SizedBox(
-                          height: 20,
-                        );
-                      },
-                      itemBuilder: (BuildContext context, int index) {
-                        int firstIndex = index * 2;
-                        int secondIndex = firstIndex + 1;
-
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ProductCard(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: productList.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10.0,
+                          mainAxisSpacing: 10.0,
+                          childAspectRatio: 0.57,
+                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/detailScreen',
+                                  arguments: productList[index]);
+                            },
+                            child: ProductCard(
                               backgroundimage:
-                                  productList[firstIndex].backgroundimage,
-                              productTitle:
-                                  productList[firstIndex].productTitle,
+                                  productList[index].backgroundimage,
+                              productTitle: productList[index].productTitle,
                               productCategory:
-                                  productList[firstIndex].productCategory,
-                              productPrice:
-                                  productList[firstIndex].productPrice,
-                              navigateTo: productList[firstIndex].navigateTo,
+                                  productList[index].productCategory,
+                              productPrice: productList[index].productPrice,
                             ),
-                            const SizedBox(width: 10),
-                            if (secondIndex < productList.length)
-                              ProductCard(
-                                backgroundimage:
-                                    productList[secondIndex].backgroundimage,
-                                productTitle:
-                                    productList[secondIndex].productTitle,
-                                productCategory:
-                                    productList[secondIndex].productCategory,
-                                productPrice:
-                                    productList[secondIndex].productPrice,
-                                navigateTo: productList[secondIndex].navigateTo,
-                              ),
-                          ],
-                        );
-                      },
-                    )
-                  ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
