@@ -16,48 +16,61 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-  
+
 class _HomePageState extends State<HomePage> {
   List<ProductDisplayItem> productList = [
-    const ProductDisplayItem(
+    ProductDisplayItem(
       backgroundimage: "assets/images/hammar.png",
       productTitle: "Hammer",
       productCategory: "Daily Use",
       productPrice: "NRs.180.00",
+      isPressed: true,
+      onWishlistPressed: () {},
     ),
-    const ProductDisplayItem(
+    ProductDisplayItem(
       backgroundimage: "assets/images/screwdriver.png",
       productTitle: "Screwdriver",
       productCategory: "Electrical",
       productPrice: "NRs.50.00",
+      isPressed: true,
+      onWishlistPressed: () {},
     ),
-    const ProductDisplayItem(
+    ProductDisplayItem(
       backgroundimage: "assets/images/kodalo.jpg",
       productTitle: "Kodalo",
       productCategory: "Agriculture",
       productPrice: "NRs.270.00",
+      isPressed: true,
+      onWishlistPressed: () {},
     ),
-    const ProductDisplayItem(
+    ProductDisplayItem(
       backgroundimage: "assets/images/pipe_wrench.jpg",
       productTitle: "Pipe Wrench",
       productCategory: "Electrical",
       productPrice: "NRs.480.00",
+      isPressed: true,
+      onWishlistPressed: () {},
     ),
-    const ProductDisplayItem(
+    ProductDisplayItem(
       backgroundimage: "assets/images/InchTape.png",
       productTitle: "Inch Tape",
       productCategory: "Construction",
       productPrice: "NRs.80.00",
+      isPressed: true,
+      onWishlistPressed: () {},
     ),
-    const ProductDisplayItem(
+    ProductDisplayItem(
       backgroundimage: "assets/images/glove.png",
       productTitle: "Hand Gloves",
       productCategory: "Daily Use",
       productPrice: "NRs.280.00",
+      isPressed: true,
+      onWishlistPressed: () {},
     ),
   ];
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<ResponsiveProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 3, 194, 35),
@@ -216,34 +229,42 @@ class _HomePageState extends State<HomePage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: productList.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10.0,
-                          mainAxisSpacing: 10.0,
-                          childAspectRatio: 0.57,
-                        ),
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/detailScreen',
-                                  arguments: productList[index]);
-                            },
-                            child: ProductCard(
-                              backgroundimage:
-                                  productList[index].backgroundimage,
-                              productTitle: productList[index].productTitle,
-                              productCategory:
-                                  productList[index].productCategory,
-                              productPrice: productList[index].productPrice,
-                            ),
-                          );
-                        },
-                      ),
+                      Consumer<ResponsiveProvider>(
+                          builder: (context, provider, child) {
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: productList.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10.0,
+                            mainAxisSpacing: 10.0,
+                            childAspectRatio: 0.57,
+                          ),
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, '/detailScreen',
+                                    arguments: productList[index]);
+                              },
+                              child: ProductCard(
+                                isPressed: true,
+                                backgroundimage:
+                                    productList[index].backgroundimage,
+                                productTitle: productList[index].productTitle,
+                                productCategory:
+                                    productList[index].productCategory,
+                                productPrice: productList[index].productPrice,
+                                onWishlistPressed: () {
+                                  provider.toogleFavorite(
+                                      provider.productsList[index]);
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      }),
                     ],
                   ),
                 ),

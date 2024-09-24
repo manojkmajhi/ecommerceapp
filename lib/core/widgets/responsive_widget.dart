@@ -7,7 +7,7 @@ class ResponsiveProvider extends ChangeNotifier {
   List<ProductDisplayItem> productsList = [];
 
   bool isLoading = false;
-
+  // bool isFavorite = true;
   void getProducts() async {
     try {
       isLoading = true;
@@ -30,5 +30,12 @@ class ResponsiveProvider extends ChangeNotifier {
       wishlistCounter--;
       notifyListeners();
     }
+  }
+
+  void toogleFavorite(ProductDisplayItem product) {
+    productsList.add(product);
+
+    // isFavorite = !isFavorite;
+    notifyListeners();
   }
 }

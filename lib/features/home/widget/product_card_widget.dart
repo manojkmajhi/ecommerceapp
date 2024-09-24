@@ -9,12 +9,16 @@ class ProductCard extends StatelessWidget {
     required this.productTitle,
     required this.productCategory,
     required this.productPrice,
+    required this.isPressed,
+    required this.onWishlistPressed,
   });
 
   final String? backgroundimage;
   final String productTitle;
   final String productCategory;
   final String productPrice;
+  final bool isPressed;
+  final VoidCallback onWishlistPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -75,33 +79,47 @@ class ProductCard extends StatelessWidget {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
+                    // ElevatedButton(
+                    //   onPressed: () {},
+                    //   style: ElevatedButton.styleFrom(
+                    //     backgroundColor: Colors.white,
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(16),
+                    //       side:
+                    //           const BorderSide(color: Colors.black, width: 1.1),
+                    //     ),
+                    //   ),
+                    //   child:
+                    //       const Icon(Icons.shopping_cart, color: Colors.black),
+                    // ),
+                    // const SizedBox(width: 5),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     provider.increment();
+                    //   },
+                    //   style: ElevatedButton.styleFrom(
+                    //     backgroundColor: Colors.white,
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(16),
+                    //       side:
+                    //           const BorderSide(color: Colors.black, width: 1.1),
+                    //     ),
+                    //   ),
+                    //   child: const Icon(Icons.favorite, color: Colors.black),
+                    // ),
+
+                    IconButton(
                       onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          side:
-                              const BorderSide(color: Colors.black, width: 1.1),
-                        ),
+                      icon: const Icon(
+                        Icons.shopping_cart,
                       ),
-                      child:
-                          const Icon(Icons.shopping_cart, color: Colors.black),
                     ),
                     const SizedBox(width: 5),
-                    ElevatedButton(
-                      onPressed: () {
-                        provider.increment();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          side:
-                              const BorderSide(color: Colors.black, width: 1.1),
-                        ),
+                    IconButton(
+                      onPressed: onWishlistPressed,
+                      icon: Icon(
+                        isPressed ? Icons.favorite : Icons.favorite_outline,
                       ),
-                      child: const Icon(Icons.favorite, color: Colors.black),
                     ),
                   ],
                 );
